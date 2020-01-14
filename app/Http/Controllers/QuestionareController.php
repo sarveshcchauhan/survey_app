@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\model\Questionare;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 
 class QuestionareController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     /**
      * Display a listing of the resource.
@@ -39,7 +45,7 @@ class QuestionareController extends Controller
     {
         $validator = Validator::make($request->all(),[
            'title' => 'required|min:5',
-            'purpose' => 'required|max:10'
+            'purpose' => 'required|min:10'
         ]);
 
         if($validator->fails()){
@@ -49,8 +55,20 @@ class QuestionareController extends Controller
                 'errors'=> $validator->getMessageBag()->toArray()],400);
         }
 
-        return $request->all();
+        //1st Approach
+        $data = new Questionare;
+        $data->user_id = auth()->user()->id;
+        $data->title = $request->title;
+        $data->purpose = $request->purpose;
+        $data->save();
 
+        //2nd Approach
+//        $data = auth()->user()->questionares()->create($data);
+        $user_id = $data->id;
+        return  response()->json([
+            'success' =>true,
+            'redirect' => '/questionare/'.$user_id
+        ],200);
     }
 
 
@@ -63,7 +81,13 @@ class QuestionareController extends Controller
      */
     public function show($id)
     {
-        //
+        //Lazy Load
+        //Loding relationship data
+
+        $survey = Questionare::find($id)->first();
+
+        $survey->load('questions.answers');
+        return view('survey.show',compact('survey'));
     }
 
     /**
@@ -74,7 +98,7 @@ class QuestionareController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**

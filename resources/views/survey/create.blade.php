@@ -46,13 +46,16 @@
                     url:"{{route('questionare.store')}}",
                     data:{title:title,purpose:purpose},
                     success:function(res){
-                        console.log(res.errors);
+                        if(res.success == true){
+                            window.location.href = res.redirect;
+                            console.log(res.redirect);
+                        }
                     },error:function (res) {
                         $.each(res.responseJSON.parameters,function (i,value) {
                             if(i != null){
                                 $('#'+i).addClass('is-valid');
                             }
-                            console.log(i+":"+value);
+
                         });
                         $.each(res.responseJSON.errors,function (i,value) {
                            $('#'+i).removeClass('is-valid');
