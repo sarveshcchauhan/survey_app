@@ -12,16 +12,22 @@
                     </div>
                 </div>
 
-
                 @foreach($survey->questions as $question)
                     <div class="card mt-3">
                         <div class="card-header">{{$question->question}}</div>
                         <div class="card-body">
-                        <ul class="list-group">
-                            @foreach($question->answers as $answer)
-                                <li  class="list-group-item">{{$answer->answer}}</li>
-                            @endforeach
-                        </ul>
+                            <ul class="list-group">
+                                @foreach($question->answers as $answer)
+                                    <li  class="list-group-item">{{$answer->answer}}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <div class="card-footer">
+                            <form action="/questionare/{{$survey->id}}/questions/{{$question->id}}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-outline-danger">Remove Question</button>
+                            </form>
                         </div>
                     </div>
                 @endforeach

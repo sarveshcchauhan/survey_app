@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\model\Questionare;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $questionares = auth()->user()->questionares;
+        return view('home',compact('questionares'));
     }
 }

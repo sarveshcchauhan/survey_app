@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\model\Question;
 use App\model\Questionare;
 use Illuminate\Http\Request;
 
@@ -86,8 +87,11 @@ class QuestionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Questionare $questionare, Question $question)
     {
-        //
+        $question->answers()->delete();
+        $question->delete();
+
+        return redirect($questionare->path());
     }
 }

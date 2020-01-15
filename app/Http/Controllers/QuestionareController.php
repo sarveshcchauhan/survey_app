@@ -81,11 +81,11 @@ class QuestionareController extends Controller
      */
     public function show($id)
     {
-        //Lazy Load
-        //Loding relationship data
 
         $survey = Questionare::find($id)->first();
 
+        //Lazy Load
+        //Loding relationship data
         $survey->load('questions.answers');
         return view('survey.show',compact('survey'));
     }
