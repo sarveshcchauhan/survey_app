@@ -8,7 +8,7 @@
                     <div class="card-header">{{$survey->title}}</div>
                     <div class="card-body">
                         <a class="btn btn-dark" href="/questionare/{{$survey->id}}/questions/create">Add New Questions</a>
-                        <a class="btn btn-primary ml-2" href="/takeSurvey/{{ $survey->id }}-{{  Str::slug($survey->title) }}">Take Survey</a>
+                        <a class="btn btn-primary ml-2" href="/takeSurvey/{{ $survey->id }}-{{Str::slug($survey->title)}}">Take Survey</a>
                     </div>
                 </div>
 
@@ -18,7 +18,12 @@
                         <div class="card-body">
                             <ul class="list-group">
                                 @foreach($question->answers as $answer)
-                                    <li  class="list-group-item">{{$answer->answer}}</li>
+                                    <li  class="list-group-item d-flex justify-content-between">
+                                        <div>{{$answer->answer}}</div>
+                                        @if($question->surveyResponses->count())
+                                            <div class="text-right">{{intval(($answer->surveyResponses->count() *100) / $question->surveyResponses->count())}}%</div>
+                                        @endif
+                                    </li>
                                 @endforeach
                             </ul>
                         </div>

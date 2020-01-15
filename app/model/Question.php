@@ -18,4 +18,8 @@ class Question extends Model
     public function answers(){
         return $this->hasMany(Answer::class);
     }
+
+    public function surveyResponses(){
+        return $this->hasMany(surveyResponse::class);
+    }
 }

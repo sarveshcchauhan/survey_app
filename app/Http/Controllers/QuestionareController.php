@@ -86,7 +86,7 @@ class QuestionareController extends Controller
 
         //Lazy Load
         //Loding relationship data
-        $survey->load('questions.answers');
+        $survey->load('questions.answers.surveyResponses');
         return view('survey.show',compact('survey'));
     }
 
